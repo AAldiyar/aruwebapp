@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Пожалуйста, подождите...</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-83E7CNGR2B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+  
+    gtag('js', new Date());
+    gtag('config', 'G-83E7CNGR2B');
+
+    function getUTMParams() {
+      const params = new URLSearchParams(window.location.search);
+      let utmData = {};
+      params.forEach((value, key) => {
+        if (key.startsWith("utm_")) {
+          utmData[key] = value;
+        }
+      });
+      return utmData;
+    }
+
+    const utmData = getUTMParams();
+    if (Object.keys(utmData).length > 0) {
+      gtag('event', 'utm_capture', utmData);
+    }
+
+    function sendUTMToGoogleSheet() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("utm_source")) {
+        fetch("https://script.google.com/macros/s/AKfycbxgePSPc48iw-_1NrrX5oGQ29b3-QcXkwbafxpYhnQ64Xo_56win2vwmRW1X-utLR0U6g/exec", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params.toString()
+        }).then(response => console.log("UTM записаны в таблицу!"))
+          .catch(error => console.error("Ошибка отправки UTM:", error));
+      }
+    }
+
+    sendUTMToGoogleSheet();
+  </script>
+  <meta http-equiv="refresh" content="3; url=https://wa.me/77472936155">
+</head>
+<body>
+  <h1>Пожалуйста, подождите...</h1>
+  <p>Мы перенаправляем вас в WhatsApp...</p>
+</body>
+</html>
